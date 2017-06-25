@@ -1,0 +1,73 @@
+{{employeeForm.value | json}}
+<form [formGroup]="employeeForm" (submit)="onSubmit()" novalidate>
+    <div class="row">
+        <div class="col">
+            <div class="form-group" [ngClass]="{'has-danger': employeeForm.get('firstName').hasError('required') && employeeForm.get('firstName').touched,
+                                                'has-success': !employeeForm.get('firstName').hasError('required') && employeeForm.get('firstName').touched}">
+                <label class="col-form-label">First Name</label>
+                <input class="form-control" formControlName="firstName">
+                <div class="form-control-feedback" *ngIf="employeeForm.get('firstName').hasError('required') && employeeForm.get('firstName').touched">
+                    First Name is required
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group" [ngClass]="{'has-danger': employeeForm.get('lastName').hasError('required') && employeeForm.get('lastName').touched,
+                                                'has-success': !employeeForm.get('lastName').hasError('required') && employeeForm.get('lastName').touched}">
+                <label class="col-form-label">Last Name</label>
+                <input class="form-control" formControlName="lastName">
+                <div class="form-control-feedback" *ngIf="employeeForm.get('lastName').hasError('required') && employeeForm.get('lastName').touched">
+                    First Name is required
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <div class="form-group" [ngClass]="{'has-danger': (employeeForm.get('email').hasError('required') || employeeForm.get('email').hasError('invalidEmailAddress')) && employeeForm.get('email').touched,
+                                                'has-success': (!employeeForm.get('email').hasError('required') && !employeeForm.get('email').hasError('invalidEmailAddress')) && employeeForm.get('email').touched}">
+                    <label class="col-form-label">Email</label>
+                    <input class="form-control" formControlName="email">
+                    <div class="form-control-feedback"
+                         *ngIf="employeeForm.get('email').hasError('required') && employeeForm.get('email').touched">
+                        Email is required
+                    </div>
+                    <div class="form-control-feedback"
+                         *ngIf="employeeForm.get('email').hasError('invalidEmailAddress') && employeeForm.get('email').touched">
+                        Invalid email address
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="col-form-label">Phone</label>
+                <input class="form-control" formControlName="phone">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label class="col-form-label">Birthday</label>
+                <input class="form-control" formControlName="birthday">
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="col-form-label">Department</label>
+                <select formControlName="departmentId" class="form-control">
+                    <option *ngFor="let department of departments" [ngValue]="department.id">{{department.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button type="submit" class="btn btn-outline-primary" [disabled]="!employeeForm.valid">Submit</button>
+            <button type="button" class="btn btn-outline-primary" (click)="click()" >Click</button>
+        </div>
+    </div>
+</form>

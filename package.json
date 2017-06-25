@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A webpack starter for Angular",
   "scripts": {
-    "start": "webpack-dev-server --inline --progress --port 8080",
+    "start": "webpack-dev-server --inline --progress --port 8888",
     "test": "karma start",
     "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail"
   },
@@ -17,6 +17,7 @@
     "@angular/platform-browser": "~4.2.0",
     "@angular/platform-browser-dynamic": "~4.2.0",
     "@angular/router": "~4.2.0",
+    "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "rxjs": "5.0.1",
     "zone.js": "^0.8.4"
@@ -40,7 +41,9 @@
     "null-loader": "^0.1.1",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.2",
+    "sass-loader": "^6.0.6",
     "style-loader": "^0.13.1",
+    "to-string-loader": "^1.1.5",
     "ts-loader": "^2.2.0",
     "typescript": "~2.3.1",
     "webpack": "2.2.1",
