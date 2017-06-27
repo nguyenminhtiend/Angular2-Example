@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params}   from '@angular/router';
+import {ActivatedRoute}   from '@angular/router';
 import {Employee} from '../employee';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ValidationService} from '../../services/validation.service';
@@ -20,15 +20,13 @@ export class EmployeeDetailComponent implements OnInit {
 
     ngOnInit(): void {
         this.initDepartment();
-        this.employeeForm = this.fb.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            email: ['', [Validators.required, ValidationService.emailValidator]],
-            phone: ['', Validators.required],
-            birthday: ['', Validators.required],
-            departmentId: [2, Validators.required],
+        this.initEmployeeForm();
+        this.route.params.subscribe(params => {
+            let id = +params['id'];
+            if (id > 0) {
+                this.getEmployeeById(id);
+            }
         });
-
     }
 
     private initDepartment(): void {
@@ -39,16 +37,31 @@ export class EmployeeDetailComponent implements OnInit {
         ];
     }
 
-    private getEmployeeById(): void {
-        this.employeeService.getEmployeeById(1)
-            .subscribe((employee: any) => {
+    private initEmployeeForm(): void {
+        this.employeeForm = this.fb.group({
+            id: [0],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            email: ['', [Validators.required, ValidationService.emailValidator]],
+            phone: ['', Validators.required],
+            birthday: ['', Validators.required],
+            departmentId: [0, Validators.required],
+            rowVersion: ['']
+        });
+    }
+
+    private getEmployeeById(id: number): void {
+        this.employeeService.getEmployeeById(id)
+            .subscribe((employee: Employee) => {
                 this.employeeForm.setValue({
+                    id: employee.id,
                     firstName: employee.firstName,
                     lastName: employee.lastName,
                     email: employee.email,
                     phone: employee.phone,
                     birthday: employee.birthday,
                     departmentId: employee.departmentId,
+                    rowVersion: employee.rowVersion
                 });
             }, (err: any) => {
                 // Log errors if any
@@ -57,10 +70,12 @@ export class EmployeeDetailComponent implements OnInit {
     }
 
     onSubmit(): void {
-
-    }
-
-    click(): void {
-        this.getEmployeeById();
+        this.employeeService.updateEmployee(this.employeeForm.value)
+            .subscribe((employee: any) => {
+                console.log('ok');
+            }, (err: any) => {
+                // Log errors if any
+                console.log(err);
+            });
     }
 }

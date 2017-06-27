@@ -6,4 +6,5 @@ export class Employee {
     phone: string;
     public birthday: any;
     departmentId: number;
+    rowVersion: string;
 }
